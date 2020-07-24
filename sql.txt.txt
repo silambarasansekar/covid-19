@@ -1,0 +1,7 @@
+Create table location_details (
+   userid VARCHAR(100)  ,
+   longtitude VARCHAR(100)  NULL,
+   latitude VARCHAR(100)  NULL,
+   createdt datetime,
+   PRIMARY KEY ( userid )
+);
