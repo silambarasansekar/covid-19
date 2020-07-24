@@ -5,3 +5,15 @@ Create table location_details (
    createdt datetime,
    PRIMARY KEY ( userid )
 );
+
+
+URL :http://localhost:8080/location
+POST Request
+
+BODY:
+{
+        "userID": "simbu",
+        "longtitude": "12.2091678",
+        "latitude": "79.6946058",
+        "findCrowd" : true
+    }
