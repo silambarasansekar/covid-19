@@ -8,6 +8,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +22,7 @@ public class LocationController {
 	@Autowired
 	LocationRepository locationRepository;
 	
+	
 	@GetMapping("/getLocation")
 	public List<Location> getLocationDetails(){
 		log.info("inside getlocatoin details;:");
@@ -27,10 +30,11 @@ public class LocationController {
 		 locationRepository.findAll().forEach(locationList::add);
 		return locationList;
 	}
-	@PostMapping("/location")
-	public String  insertLocationDetails(@RequestBody Location location) {
+	@PostMapping(value ="/location", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String>  insertLocationDetails(@RequestBody Location location) {
 		log.info("inside insertLocationDetails details;:"+location.getLatitude()+":"+location.getUserID());
 		Date date = new Date();
+		
 		String isCrowded =  null;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		location.setCreateDt(sdf.format(date));
@@ -38,11 +42,12 @@ public class LocationController {
 		if(location.isFindCrowd()) {
 			isCrowded = getClusterDetails(location);
 			log.info("crodwed::"+isCrowded);
+			
 		}else {
 			locationRepository.save(location);
-			isCrowded ="User Added/Updated Successfully";
+			isCrowded = "User Added/Updated Successfully";
 		}
-	      return isCrowded;
+	      return ResponseEntity.ok(isCrowded);
 	}
 	
 	
