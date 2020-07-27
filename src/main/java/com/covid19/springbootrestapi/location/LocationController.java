@@ -31,10 +31,10 @@ public class LocationController {
 		return locationList;
 	}
 	@PostMapping(value ="/location", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String>  insertLocationDetails(@RequestBody Location location) {
+	public ResponseEntity<ResponseData>  insertLocationDetails(@RequestBody Location location) {
 		log.info("inside insertLocationDetails details;:"+location.getLatitude()+":"+location.getUserID());
 		Date date = new Date();
-		
+		ResponseData data = new ResponseData();
 		String isCrowded =  null;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		location.setCreateDt(sdf.format(date));
@@ -47,7 +47,8 @@ public class LocationController {
 			locationRepository.save(location);
 			isCrowded = "User Added/Updated Successfully";
 		}
-	      return ResponseEntity.ok(isCrowded);
+		data.setIsCrowded(isCrowded);
+	      return ResponseEntity.ok(data);
 	}
 	
 	
